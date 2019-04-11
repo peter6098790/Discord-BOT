@@ -7,7 +7,8 @@ module.exports.run = async(bot, message, args) => {
     .setColor("#9999FF")
     .setThumbnail(botcon)
     .addField("機器人ID:", bot.user.username)
-    .addField("創建日期:",bot.user.createdAt);
+    .addField("創建日期:",bot.user.createdAt)
+    .addField("原始碼:","https://github.com/peter6098790/Discord-BOT");
     message.channel.send(botEmbed);
 }
 
