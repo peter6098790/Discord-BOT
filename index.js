@@ -4,7 +4,9 @@ const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
 bot.commands = new Discord.Collection();
 let contribution = require("./貢獻值.json");
+//let coin = require("./coins.json");
 
+//command loading
 fs.readdir("./commands/", (err, files) => {
     
     if(err) console.log(err);
@@ -24,38 +26,83 @@ fs.readdir("./commands/", (err, files) => {
 })
 
 
-
+//bot status
 bot.on("ready", async() => {
     console.log(`${bot.user.username} 已經上線`);
-    bot.user.setActivity("開發中", {type: "PLAYING"});
+    bot.user.setActivity("!help 獲得指令列表", {type: "PLAYING"});
 });
 
+
+//console chatter
+let y = process.openStdin()
+y.addListener("data",res => {
+    let x = res.toString().trim().split(/ +/g)
+    bot.channels.get("564780071454375937").send(x.join(" "));
+});
+
+
+//message listener
 bot.on("message", async message => {
     if(message.author.bot) return;
     if(message.channel.type === "dm") return;
+
+    if(message.content.includes("小雞雞")){
+        message.react("💢");
+    }
+    if(message.content.includes("油膩")) message.channel.send("什麼? 油膩? 你說我油膩!?");
+    if(message.content.includes("==")) message.channel.send("= =");
+    if(message.content.includes("6")) message.react("🤙");
+    if(message.content == "行") message.channel.send("我們行不行? 絕對沒問題!");
+    if(message.content == "型") message.channel.send("我們行不行? 絕對沒問題!");
+    if(message.content=="臉頰") message.channel.send("萌萌!");
+    if(message.content.includes("閉嘴")) message.channel.send("你才閉嘴🖕");
+    if(message.content === "?") message.channel.send("?");
+    if(message.content.includes("我是誰")) message.channel.send("你是"+message.author.username);
+    if(message.content.includes("@Frostwolf"))message.channel.send("萩芳站起來!");
+    if(message.content.includes("@希爾頓")) message.channel.send(message.author.username+"想對你說:請你出去");
+    if(message.content.includes("晚餐吃啥")){
+        var restroom =['鬲饕','成功牛排','7-11','學餐'];
+        var point = Math.floor(Math.random()*(restroom.length));
+        message.channel.send("吃"+restroom[point]);
+    }
+    if(message.content.includes("點歌")){
+        message.channel.send(
+            ":headphones: 點歌:headphones: "+"\n"+
+            "!join:將音樂BOT加入目前所在的語音頻道"+"\n"+
+            "!p 歌曲名:BOT會以此為關鍵字從youtube搜尋歌曲(有時候會抓到奇怪的影片= =)"+"\n"+
+            "!p youtube影片網址:同上,將歌曲加入BOT播放列表"+"\n"+
+            "!playtop:使用方式同!p 只是加入的歌曲於當前歌曲播放完畢後就會開始播放"+"\n"+
+            "!np:查詢現在播放的歌曲名稱"+"\n"+
+            "!skip:跳過當前播放的歌曲"+"\n"+
+            "!stop:暫停播放"+"\n"+
+            "!resume:繼續播放"+"\n"+
+            "!clear:清空BOT播放清單"+"\n"+
+            "!disconnect or !leave:讓BOT離開語音頻道"+"\n"
+        );
+    }
     //文字聊天獲得貨幣
-    // if(!coins[message.author.id]){
-    //     coins[message.author.id] = {
+    // if(!coin[message.author.id]){
+    //     coin[message.author.id] = {
     //         coins: 0
     //     };
     // }
 
     // let coinAmt = Math.floor(Math.random() * 15) + 1;
     // let baseAmt = Math.floor(Math.random() * 15) + 1;
-    //console.log(`${coinAmt} : ${baseAmt}`);
+    // console.log(`${coinAmt} : ${baseAmt}`);
     // if(coinAmt === baseAmt){
-    //     coins[message.author.id] = {
-    //         coins: coins[message.author.id].coins +coinAmt
+    //     coin[message.author.id] = {
+    //         coins: coin[message.author.id].coins + coinAmt
     //     };
-    // fs.writeFile("./coins.json",JSON.stringify(coins),(err) => {
-    //     if (err) console.log(err)
-    // });
-    // let coinEmbed = new Discord.RichEmbed()
-    // .setAuthor(message.author.username)
-    // .setColor("#00FF00")
-    // .addField("🏆",`已獲得 ${coinAmt} 貢獻值`);
+    //     fs.writeFile("./coins.json",JSON.stringify(coin),(err) => {
+    //         if (err) console.log(err)
+    //     });
+    //     let coinEmbed = new Discord.RichEmbed()
+    //     .setAuthor(message.author.username)
+    //     .setColor("#00FF00")
+    //     .addField(`<:bal:570154707679445004>`,`已獲得 ${coinAmt} 毛豆`);
 
-    // message.channel.send(coinEmbed).then(msg => {msg.delete(5000)});
+    //     message.channel.send(coinEmbed).then(msg => {msg.delete(5000)});
     // }
 
     let prefix = botconfig.prefix;
@@ -69,7 +116,7 @@ bot.on("message", async message => {
 });
 
 // contribution system as Rc
-if(onlineMembers !== "undifine") setInterval(giveContribution , 3000);
+if(onlineMembers !== "undifine") setInterval(giveContribution , 3600000);
 // give user contribution
 function giveContribution(){
     onlineMembers.forEach(function(uid) {
@@ -85,7 +132,7 @@ function giveContribution(){
         console.log(`${uid}'s contribution now is ${contribution[uid].contribution}! & level now is ${contribution[uid].level}`);
     });
 }
-
+//check which user join the voice channel
 var onlineMembers = [];
 bot.on('voiceStateUpdate', (oldMember, newMember) => {
     let newUserChannel = newMember.voiceChannel
@@ -99,7 +146,11 @@ bot.on('voiceStateUpdate', (oldMember, newMember) => {
                 contribution: 0,
                 level: 1
             };
+            fs.writeFile("./貢獻值.json",JSON.stringify(contribution),(err) => {
+                if (err) console.log(err)
+            });
         }
+        console.log(`${newMember.user.username} 加入頻道`);
     } else if(newUserChannel === undefined){
         function checkLeave(uid){
             return uid !== oldMember.id;
