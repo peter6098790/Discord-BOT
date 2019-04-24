@@ -40,6 +40,33 @@ y.addListener("data",res => {
     bot.channels.get("564780071454375937").send(x.join(" "));
 });
 
+//新成員加入or離開伺服器的系統公告
+bot.on('guildMemberAdd', async member => {
+    console.log(`${member.id} join the server.`);
+    let welcomechannel = member.guild.channels.find(`name`,"魔獸打起來");
+    welcomechannel.send(`各位注意! ${member} 誤上賊船LA !!`);
+
+});
+bot.on('guildMemberRemove', async member => {
+    console.log(`${member.id} left the server.`);
+    let welcomechannel = member.guild.channels.find(`name`,"魔獸打起來");
+    welcomechannel.send(`各位注意! ${member} 安全下庄 !!`);
+
+});
+//新頻道被創建或刪除的系統公告
+bot.on('channelCreate', async channel => {
+    console.log(`${channel.name} has been created.`);
+    let targetChannel = channel.guild.channels.find(`name`,"魔獸打起來");
+    targetChannel.send(`🌋由於大規模的海底火山噴發 一塊新大陸 ${channel} 出現了!`);
+
+});
+bot.on('channelDelete', async channel => {
+    console.log(`${channel.name} has been created.`);
+    let targetChannel = channel.guild.channels.find(`name`,"魔獸打起來");
+    targetChannel.send(`🌊隨著海平面上升 ${channel} 隨著亞特蘭提斯一同沉入水中`);
+
+});
+
 
 //message listener
 bot.on("message", async message => {
