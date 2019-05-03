@@ -7,6 +7,7 @@ module.exports.run = async (bot, message, args) => {
     .addField("機器人相關","!botinfo , !report(未開放)")
     .addField("管理訊息","!cls")
     .addField("個人訊息","!profile , !badge(未開放)")
+    .addField("貨幣經濟","!coins , !pay")
     .addField("備註","!指令 help看更詳細用法")
     .setColor("#8300ff");
 

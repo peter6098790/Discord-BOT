@@ -1,23 +1,26 @@
 const Discord = require("discord.js");
-let coins = require("../coins.json");
+const fs = require("fs");
+let coins = require("../bal.json");
 
 module.exports.run = async (bot, message, args) => {
-
+    if(args[0] == "help"){
+        message.channel.send("貨幣系統,顯示你目前的財產");
+        return;
+    }
     if(!coins[message.author.id]){
         coins[message.author.id] = {
-            coins: 0
-        }
+            coin: 0
+        };
     }
+    fs.writeFile("./bal.json",JSON.stringify(coins),(err) => {
+        if (err) console.log(err)
+    });
+    let CoinsEmbed = new Discord.RichEmbed()
+    .addField("擁有毛豆:",coins[message.author.id].coin);
+    message.channel.send(CoinsEmbed).then(msg => msg.delete(5000));
 
-    let uCoins = coins[message.author.id].coins;
-
-    let coinEmbed = new Discord.RichEmbed()
-    .setAuthor(message.author.username)
-    .setColor("#00FF00")
-    .addField("🏆貢獻值",uCoins);
-    message.channel.send(coinEmbed).then(msg => {msg.delete(5000)});
 }
 
 module.exports.help = {
-    name: "coins"
+    name:"coins"
 }

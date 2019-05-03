@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
     if(args[0]== "help"){
-        message.channel.send("訊息批量刪除:!cls <要刪除的訊息量>");
+        message.channel.send("訊息批量刪除:\n!cls <要刪除的訊息量>");
         return;
     }
     if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("權限不足");
