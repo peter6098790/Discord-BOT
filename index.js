@@ -72,21 +72,8 @@ bot.on('channelDelete', async channel => {
 bot.on("message", async message => {
     if(message.author.bot) return;
     if(message.channel.type === "dm") return;
-
-    if(message.content.includes("小雞雞")){
-        message.react("💢");
-    }
     if(message.content.includes("油膩")) message.channel.send("什麼? 油膩? 你說我油膩!?");
-    if(message.content.includes("==")) message.channel.send("= =");
-    if(message.content.includes("6")) message.react("🤙");
-    if(message.content == "行") message.channel.send("我們行不行? 絕對沒問題!");
-    if(message.content == "型") message.channel.send("我們行不行? 絕對沒問題!");
     if(message.content=="臉頰") message.channel.send("萌萌!");
-    if(message.content.includes("閉嘴")) message.channel.send("你才閉嘴🖕");
-    if(message.content === "?") message.channel.send("?");
-    if(message.content.includes("我是誰")) message.channel.send("你是"+message.author.username);
-    if(message.content.includes("@Frostwolf"))message.channel.send("萩芳站起來!");
-    if(message.content.includes("@希爾頓")) message.channel.send(message.author.username+"想對你說:請你出去");
     if(message.content.includes("晚餐吃啥")){
         var restroom =['鬲饕','成功牛排','7-11','學餐'];
         var point = Math.floor(Math.random()*(restroom.length));
@@ -134,7 +121,7 @@ bot.on("message", async message => {
 
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(" ");
-    let cmd = messageArray[0];
+    let cmd = messageArray[0]toLowerCase();
     let args = messageArray.slice(1);
 
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
