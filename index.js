@@ -1,8 +1,15 @@
 const botconfig = require("./botconfig.json");
-const Discord = require ("discord.js");
+const { Client, IntentsBitField, Events, GatewayIntentBits, ActivityType, Collection} = require('discord.js');
 const fs = require("fs");
-const bot = new Discord.Client({disableEveryone: true});
-bot.commands = new Discord.Collection();
+const bot = new Client({
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent,
+    ],
+});
+bot.commands = new Collection();
 let contribution = require("./貢獻值.json");
 //let coin = require("./coins.json");
 
@@ -29,15 +36,19 @@ fs.readdir("./commands/", (err, files) => {
 //bot status
 bot.on("ready", async() => {
     console.log(`${bot.user.username} 已經上線`);
-    bot.user.setActivity("!help 獲得指令列表", {type: "PLAYING"});
+    bot.user.setActivity({
+        name: '/help 獲取指令列表',
+        type: ActivityType.Playing,
+    });
 });
 
 
-//console chatter
+//後臺聊天
 let y = process.openStdin()
 y.addListener("data",res => {
-    let x = res.toString().trim().split(/ +/g)
-    bot.channels.get("564780071454375937").send(x.join(" "));
+    let x = res.toString().trim().split(/ +/g);
+    //預設發話頻道id
+    bot.channels.fetch("946359364514615346").then(channel=>channel.send(x.join(" ")));
 });
 
 //新成員加入or離開伺服器的系統公告
@@ -69,7 +80,7 @@ bot.on('channelDelete', async channel => {
 
 
 //message listener
-bot.on("message", async message => {
+bot.on("messageCreate", async message => {
     if(message.author.bot) return;
     if(message.channel.type === "dm") return;
     if(message.content.includes("油膩")) message.channel.send("什麼? 油膩? 你說我油膩!?");
@@ -79,21 +90,7 @@ bot.on("message", async message => {
         var point = Math.floor(Math.random()*(restroom.length));
         message.channel.send("吃"+restroom[point]);
     }
-    if(message.content.includes("點歌")){
-        message.channel.send(
-            ":headphones: 點歌:headphones: "+"\n"+
-            "!join:將音樂BOT加入目前所在的語音頻道"+"\n"+
-            "!p 歌曲名:BOT會以此為關鍵字從youtube搜尋歌曲(有時候會抓到奇怪的影片= =)"+"\n"+
-            "!p youtube影片網址:同上,將歌曲加入BOT播放列表"+"\n"+
-            "!playtop:使用方式同!p 只是加入的歌曲於當前歌曲播放完畢後就會開始播放"+"\n"+
-            "!np:查詢現在播放的歌曲名稱"+"\n"+
-            "!skip:跳過當前播放的歌曲"+"\n"+
-            "!stop:暫停播放"+"\n"+
-            "!resume:繼續播放"+"\n"+
-            "!clear:清空BOT播放清單"+"\n"+
-            "!disconnect or !leave:讓BOT離開語音頻道"+"\n"
-        );
-    }
+
     //文字聊天獲得貨幣
     // if(!coin[message.author.id]){
     //     coin[message.author.id] = {
@@ -121,13 +118,29 @@ bot.on("message", async message => {
 
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(" ");
-    let cmd = messageArray[0]toLowerCase();
+    let cmd = messageArray[0].toLowerCase();
     let args = messageArray.slice(1);
 
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if(commandfile) commandfile.run(bot,message,args);
 
 });
+
+bot.on(Events.InteractionCreate, async interaction => {
+    if(!interaction.isChatInputCommand()) return;
+
+    const command = bot.commands.get(interaction.commandName);
+    console.log(command);
+    if (!command) return;
+    
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        return interaction.reply({ content: '處理命令時發生錯誤', ephemeral: true });
+    }
+});
+
 
 // contribution system as Rc
 if(onlineMembers !== "undifine") setInterval(giveContribution , 3600000);
