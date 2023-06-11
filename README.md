@@ -5,15 +5,15 @@
 > npm install
 
 ## 注意事項
-1.請將你的機器人token填入 botconfig.json 的token欄位，並注意不要將其外流，以免機器人被惡意使用
-![image](https://github.com/peter6098790/Discord-BOT/assets/45934743/cad021f4-372c-458f-926f-1922d7f6142f)
+1.請將你的機器人token填入 botconfig.json 的token欄位，並注意不要將其外流，以免機器人被惡意使用  
+![image](https://github.com/peter6098790/Discord-BOT/assets/45934743/cad021f4-372c-458f-926f-1922d7f6142f)  
 
 2. 開發新指令後都需先執行一次 register-commands.js 註冊機器人指令，才能使指令生效
 > node register-commands.js
 
 ## 目前功能
-1. 機器人關鍵字回話，回話內容可於 index.js 中第83~125行負責訊息監聽的部分自行添加
-![image](https://github.com/peter6098790/Discord-BOT/assets/45934743/8f06ab49-7d65-4922-a192-fbe09ad3bb60)
+1. 機器人關鍵字回話，回話內容可於 index.js 中第83~125行負責訊息監聽的部分自行添加  
+![image](https://github.com/peter6098790/Discord-BOT/assets/45934743/8f06ab49-7d65-4922-a192-fbe09ad3bb60)  
 
 ``` =javascript
 // 程式碼區塊
