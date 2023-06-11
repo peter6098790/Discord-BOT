@@ -1,7 +1,7 @@
 # Discord-BOT
 ## 環境設置
-1.安裝 node js v18.16.0
-2.安裝所需套件
+1.安裝 node js v18.16.0  
+2.安裝所需套件  
 > npm install
 
 ## 注意事項
