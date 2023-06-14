@@ -1,6 +1,9 @@
 {
   "name": "testbot",
   "version": "1.0.0",
+  "engines": {
+  "node": "18.16.0"
+  },
   "description": "機器人練習",
   "main": "index.js",
   "scripts": {
