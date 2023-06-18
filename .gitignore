@@ -2,3 +2,4 @@ botconfig.json
 register-commands-config.json
 node_modules
 貢獻值.json
+.env
