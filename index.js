@@ -1,4 +1,4 @@
-const botconfig = require("./botconfig.json");
+require('dotenv').config();
 const { Client, IntentsBitField, Events, GatewayIntentBits, ActivityType, Collection} = require('discord.js');
 const fs = require("fs");
 const bot = new Client({
@@ -48,31 +48,31 @@ let y = process.openStdin()
 y.addListener("data",res => {
     let x = res.toString().trim().split(/ +/g);
     //設定後臺聊天時機器人的發話頻道id
-    bot.channels.fetch("946359364514615346").then(channel=>channel.send(x.join(" ")));
+    bot.channels.fetch(process.env.CHANNEL_ID).then(channel=>channel.send(x.join(" ")));
 });
 
 //新成員加入or離開伺服器的系統公告
 bot.on('guildMemberAdd', async member => {
     console.log(`${member.id} join the server.`);
     //設定機器人的公告頻道為一個名叫機器人頻道的文字頻道
-    let targetChannel = member.guild.channels.cache.find(channel => channel.name === "機器人頻道");
+    let targetChannel = member.guild.channels.cache.find(channel => channel.name === process.env.CHENNEL_NAME);
     targetChannel.send(`各位注意! ${member} 誤上賊船LA !!`);
 });
 bot.on('guildMemberRemove', async member => {
     console.log(`${member.id} left the server.`);
-    let targetChannel = member.guild.channels.cache.find(channel => channel.name === "機器人頻道");
+    let targetChannel = member.guild.channels.cache.find(channel => channel.name === process.env.CHENNEL_NAME);
     targetChannel.send(`各位注意! ${member} 安全下庄 !!`);
 });
 
 //頻道創建or刪除的系統公告
 bot.on('channelCreate', async channel => {
     console.log(`${channel.name} has been created.`);
-    let targetChannel = channel.guild.channels.cache.find(channel => channel.name === "機器人頻道");
+    let targetChannel = channel.guild.channels.cache.find(channel => channel.name === process.env.CHENNEL_NAME);
     targetChannel.send(`🌋 由於大規模的海底火山噴發，一塊新大陸 ${channel} 出現了！`);
 });
 bot.on('channelDelete', async channel => {
     console.log(`${channel.name} has been delete.`);
-    let targetChannel = channel.guild.channels.cache.find(channel => channel.name === "機器人頻道");
+    let targetChannel = channel.guild.channels.cache.find(channel => channel.name === process.env.CHENNEL_NAME);
     targetChannel.send(`🌊隨著海平面上升 ${channel} 與亞特蘭提斯一同沉入水中`);
 });
 
@@ -191,4 +191,4 @@ bot.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 
-bot.login(botconfig.token);
+bot.login(process.env.TOKEN);

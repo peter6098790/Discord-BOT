@@ -1,6 +1,5 @@
-
+require('dotenv').config();
 const { REST, Routes } = require('discord.js');
-const registerCommands = require('./register-commands-config.json')
 
 const commands = [
   {
@@ -13,7 +12,7 @@ const commands = [
   },
 ];
 
-const rest = new REST().setToken(registerCommands.token);
+const rest = new REST().setToken(process.env.TOKEN);
 
 (async () => {
   try {
@@ -21,8 +20,8 @@ const rest = new REST().setToken(registerCommands.token);
     
     await rest.put(
       Routes.applicationGuildCommands(
-        registerCommands.clientId,
-        registerCommands.guildId
+        process.env.CLIENT_ID,
+        process.env.GUILD_ID
       ),
       { body: commands }
     );
