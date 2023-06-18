@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fs = require("fs");
-let contribution = require("../貢獻值.json");
+let contribution = require("../contribution.json");
 let badges = require("../badges.json");
 const range = ['菜鳥','偵查兵','步兵','士官','資深士官','一等士官','石衛士','血衛士','軍團士兵','百夫長','勇士','中將','將軍','督軍','高階督軍','大酋長'];
 

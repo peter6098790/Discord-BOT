@@ -11,7 +11,7 @@ const bot = new Client({
     ],
 });
 bot.commands = new Collection();
-let contribution = require("./貢獻值.json");
+let contribution = require("./contribution.json");
 //let coin = require("./coins.json");
 
 //command loading
@@ -154,7 +154,7 @@ function giveContribution(){
         if(nextLevel <= contribution[uid].contribution){
             contribution[uid].level = curLevel + 1;
         }
-        fs.writeFile("./貢獻值.json",JSON.stringify(contribution),(err) => {
+        fs.writeFile("./contribution.json",JSON.stringify(contribution),(err) => {
             if (err) console.log(err)
         });
         console.log(`${uid}'s contribution now is ${contribution[uid].contribution}! & level now is ${contribution[uid].level}`);
@@ -179,7 +179,7 @@ bot.on('voiceStateUpdate', (oldState, newState) => {
                 contribution: 0,
                 level: 1
             };
-            fs.writeFile("./貢獻值.json", JSON.stringify(contribution), (err) => {
+            fs.writeFile("./contribution.json", JSON.stringify(contribution), (err) => {
                 if (err) console.log(err)
             });
         }
