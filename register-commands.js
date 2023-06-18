@@ -6,6 +6,8 @@ const commands = [
   {
     name: 'help',
     description: '指令列表',
+  },
+  {
     name: 'profile',
     description: '個人資料',
   },

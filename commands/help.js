@@ -12,7 +12,6 @@ module.exports = {
         .addFields({ name: "管理訊息", value: "!cls"})
         .addFields({ name: "個人訊息", value: "!profile , !badge(未開放)"})
         .addFields({ name: "貨幣經濟", value: "!coins , !pay"})
-        .addFields({ name: "備註", value: "!指令 help看更詳細用法"})
         .setColor("#8300ff");
 
         return interaction.reply({embeds: [helpEmbed]}); //'成功'
